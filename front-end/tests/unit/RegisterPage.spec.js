@@ -1,12 +1,14 @@
 import { mount, createLocalVue } from '@vue/test-utils'
 import RegisterPage from '@/views/RegisterPage'
 import VueRouter from 'vue-router'
+import Vuelidate from 'vuelidate'
 import registrationService from '@/services/registration'
 
 // Adding Vue Router to the test so that
 // we can access vm.$router
 const localVue = createLocalVue()
 localVue.use(VueRouter)
+localVue.use(Vuelidate)
 const router = new VueRouter()
 
 // Mock dependency registratioService
@@ -112,28 +114,28 @@ describe('RegisterPage.vue', () => {
 
     expect(wrapper.find('.failed').isVisible()).toBe(true)
   })
-  /*
-    it('should fail when the email address is invalid', () => {
-      wrapper.vm.form.username = 'test'
-      wrapper.vm.form.emailAddress = 'bad-email-address'
-      wrapper.vm.form.password = 'JestRocks!'
-      wrapper.vm.submitForm()
-      expect(registerSpy).not.toHaveBeenCalled()
-    })
 
-    it('should fail when the username is invalid', () => {
-      wrapper.vm.form.username = 'a'
-      wrapper.vm.form.emailAddress = 'test@taskagile.com'
-      wrapper.vm.form.password = 'JestRocks!'
-      wrapper.vm.submitForm()
-      expect(registerSpy).not.toHaveBeenCalled()
-    })
+  it('should fail when the email address is invalid', () => {
+    fieldUsername.setValue('test')
+    fieldEmailAddress.setValue('bad-email')
+    fieldPassword.setValue('password')
+    wrapper.vm.submitForm()
+    expect(registerSpy).not.toHaveBeenCalled()
+  })
 
-    it('should fail when the password is invalid', () => {
-      wrapper.vm.form.username = 'test'
-      wrapper.vm.form.emailAddress = 'test@taskagile.com'
-      wrapper.vm.form.password = 'bad!'
-      wrapper.vm.submitForm()
-      expect(registerSpy).not.toHaveBeenCalled()
-    }) */
+  it('should fail when the username is invalid', () => {
+    wrapper.vm.form.username = 'a'
+    wrapper.vm.form.emailAddress = 'test@taskagile.com'
+    wrapper.vm.form.password = 'JestRocks!'
+    wrapper.vm.submitForm()
+    expect(registerSpy).not.toHaveBeenCalled()
+  })
+
+  it('should fail when the password is invalid', () => {
+    wrapper.vm.form.username = 'test'
+    wrapper.vm.form.emailAddress = 'test@taskagile.com'
+    wrapper.vm.form.password = 'bad!'
+    wrapper.vm.submitForm()
+    expect(registerSpy).not.toHaveBeenCalled()
+  })
 })
